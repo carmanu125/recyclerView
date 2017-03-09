@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jcd.reciclerview.Main2Activity;
 import com.jcd.reciclerview.R;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ContentHolder>{
 
-    ArrayList<User> listUser;
+    public static  ArrayList<User> listUser;
 
     public RecyclerAdapter(ArrayList<User> listUser) {
         this.listUser = listUser;
@@ -64,6 +65,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Conten
             Context context = itemView.getContext();
             Intent intent = new Intent(context, Main2Activity.class);
             context.startActivity(intent);
+
+            Toast.makeText(context, "usuario: " + listUser.get(this.getLayoutPosition()).getName()
+                    , Toast.LENGTH_SHORT).show();
         }
 
         public void bindUser(User user){
