@@ -1,9 +1,12 @@
 package com.jcd.reciclerview;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -13,6 +16,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -185,6 +189,24 @@ public class InserCliWSActivity extends AppCompatActivity {
                 Toast.makeText(InserCliWSActivity.this, "Hay: " + clientes.length + " 1 : " + clientes[0], Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    public String encodeImageBase64(Bitmap bitmap) {
+
+        Bitmap bm = BitmapFactory.decodeFile("/path/to/image.jpg");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+        byte[] byteArrayImage  = baos.toByteArray();
+
+        String encodedImage = Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
+        return encodedImage;
+    }
+
+    public Bitmap decodeImageBase64(String image){
+        byte[] decodedString = Base64.decode(image, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+        return decodedByte;
     }
 
 }
