@@ -19,6 +19,8 @@ public class EmCartagoDb {
     public static final String KEY_USER_ID = "id";
     public static final String KEY_USER_NAME = "nameUser";
     public static final String KEY_USER_ADD = "addressUser";
+    public static final String KEY_USER_PHOTO = "Photo";
+
 
 
     public static final String T_HOUSES = "Houses";
@@ -41,13 +43,13 @@ public class EmCartagoDb {
 
 
         public MyHelper(Context context) {
-            super(context, "EmCartago", null, 1);
+            super(context, "EmCartago", null, 2);
         }
 
         @Override
         public void onCreate(SQLiteDatabase db) {
 
-            db.execSQL("CREATE TABLE " + T_USER + "( " + KEY_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_USER_NAME + " TEXT, " + KEY_USER_ADD + " TEXT);");
+            db.execSQL("CREATE TABLE " + T_USER + "( " + KEY_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_USER_NAME + " TEXT, " + KEY_USER_ADD + " TEXT, " + KEY_USER_PHOTO +  " TEXT);");
             db.execSQL("CREATE TABLE " + T_HOUSES + "( " + KEY_HOUSE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "  + KEY_HOUSE_USER_ID + " INTEGER, " + KEY_HOUSE_Name + " TEXT, " + KEY_HOUSE_ADD + " TEXT, FOREIGN KEY (" + KEY_HOUSE_USER_ID + ") REFERENCES " + T_USER+"("+KEY_USER_ID+")););");
         }
 
@@ -73,6 +75,16 @@ public class EmCartagoDb {
         ContentValues cv = new ContentValues();
         cv.put(KEY_USER_NAME, values[0]);
         cv.put(KEY_USER_ADD, values[1]);
+
+        nDB.insert(T_USER, null, cv);
+    }
+
+    public void insertUsersPhoto(String...values){
+
+        ContentValues cv = new ContentValues();
+        cv.put(KEY_USER_NAME, values[0]);
+        cv.put(KEY_USER_ADD, values[1]);
+        cv.put(KEY_USER_PHOTO, values[2]);
 
         nDB.insert(T_USER, null, cv);
     }
