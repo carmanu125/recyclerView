@@ -11,13 +11,17 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.Time;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.jcd.reciclerview.bd.EmCartagoDb;
+import com.jcd.reciclerview.ws.ImagesAsyncTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
@@ -26,6 +30,7 @@ public class ImageActivity extends AppCompatActivity {
     EmCartagoDb nbd;
     ImageView imPhoto;
     File file;
+    EditText edIdUser;
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -41,6 +46,7 @@ public class ImageActivity extends AppCompatActivity {
         nbd = new EmCartagoDb(this);
 
         imPhoto = (ImageView) findViewById(R.id.im_photo);
+        edIdUser = (EditText) findViewById(R.id.edIdUser);
 
         //Versiones 6 +
         int permission = ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -79,6 +85,7 @@ public class ImageActivity extends AppCompatActivity {
             Uri outputFileUri = Uri.fromFile(file);
             icamara.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
             startActivityForResult(icamara,0);
+
         }
 
         catch(Exception e)
@@ -96,6 +103,7 @@ public class ImageActivity extends AppCompatActivity {
 /*Convierto el archivo generado en la previa a un bitmap para tratarlo como imagen y las últimas pruebas me han dado a entender que el fallo está en alguna de las siguientes 4 líneas*/
 
                 Bitmap mybit = BitmapFactory.decodeFile(file.getAbsolutePath());
+            String filename = file.getName();
                 try {
 //ruta en la Base de datos
                     nbd.open();
@@ -112,6 +120,23 @@ public class ImageActivity extends AppCompatActivity {
 //Mostramos
                     imPhoto.setImageBitmap(mybit);
                     imPhoto.setScaleType(ImageView.ScaleType.FIT_XY);
+
+
+                    /*PArte WS*/
+                    //Deoodificamos la Imagen en Base64
+
+
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    mybit.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+                    byte[] byteArrayImage = baos.toByteArray();
+
+
+                    String encodedImage = Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
+                    //encodedImage = encodedImage.replace("\n", "%20");
+
+                    ImagesAsyncTask asyncTask = new ImagesAsyncTask(this);
+                    asyncTask.execute(encodedImage, filename);
+
                 }
 
             catch(Exception ex)
@@ -119,5 +144,26 @@ public class ImageActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"Se ha producido un error, vuelva a tomar la foto", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    public void mostrarIdFoto(View view) {
+
+        nbd.open();
+        String result = nbd.listUserPhoto();
+        nbd.close();
+
+        Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+
+    }
+
+    public void setPhoto(View view){
+        nbd.open();
+        String photo = nbd.getPhoto(edIdUser.getText().toString());
+        nbd.close();
+
+        file = new File(photo);
+        Bitmap mybit = BitmapFactory.decodeFile(file.getAbsolutePath());
+        imPhoto.setImageBitmap(mybit);
+
     }
 }

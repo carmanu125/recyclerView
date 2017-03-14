@@ -103,4 +103,32 @@ public class EmCartagoDb {
         return resutl;
     }
 
+    public String listUserPhoto(){
+        String resutl ="";
+
+        Cursor c = nDB.rawQuery("select * from " + T_USER  + " where " + KEY_USER_PHOTO + " is not null", null);
+
+        for(c.moveToFirst(); !c.isAfterLast(); c.moveToNext()){
+
+            resutl += "id: " + c.getInt(0) + "Name: " + c.getString(1) + " Add: " + c.getString(1) + " photo: " + c.getString(2) + "\n";
+
+        }
+
+        return resutl;
+    }
+
+    public String getPhoto(String id){
+        String resutl ="";
+
+        Cursor c = nDB.rawQuery("select " + KEY_USER_PHOTO + " from " + T_USER  + " where " + KEY_USER_ID + " = " + id, null);
+
+        for(c.moveToFirst(); !c.isAfterLast(); c.moveToNext()){
+
+            resutl = c.getString(0) ;
+
+        }
+
+        return resutl;
+    }
+
 }

@@ -20,6 +20,72 @@
         android:text="Tomar Foto"
         android:onClick="tomarFoto"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+
+            <Button
+                android:id="@+id/btMostarIdFoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:text="Traer Datos Con foto"
+                android:onClick="mostrarIdFoto"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:text="Seleccionar Foto Id"
+                android:onClick="setPhoto"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+
+            <Button
+                android:id="@+id/btMostarIdFotoWS"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:text="Traer Datos Con foto WS"
+                android:onClick="mostrarIdFotoWS"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:text="Seleccionar Foto Id WSs"
+                android:onClick="setPhotoWS"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/edIdUser"
+        android:hint="id User"/>
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
