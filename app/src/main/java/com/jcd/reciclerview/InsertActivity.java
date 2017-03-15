@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import com.jcd.reciclerview.bd.EmCartagoDb;
 
+import java.io.IOException;
+
 public class InsertActivity extends AppCompatActivity {
 
     EmCartagoDb emDb;
@@ -28,7 +30,11 @@ public class InsertActivity extends AppCompatActivity {
 
     public void save(View view) {
 
-        emDb.open();
+        try {
+            emDb.open();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         emDb.insertUsers(edName.getText().toString(), edAdd.getText().toString());
         emDb.close();
 
@@ -39,7 +45,11 @@ public class InsertActivity extends AppCompatActivity {
     }
 
     public void list(View view) {
-        emDb.open();
+        try {
+            emDb.open();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         String result =emDb.listUser();
         emDb.close();
 

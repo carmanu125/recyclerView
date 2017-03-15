@@ -24,6 +24,7 @@ import com.jcd.reciclerview.ws.ImagesAsyncTask;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class ImageActivity extends AppCompatActivity {
 
@@ -148,22 +149,30 @@ public class ImageActivity extends AppCompatActivity {
 
     public void mostrarIdFoto(View view) {
 
-        nbd.open();
-        String result = nbd.listUserPhoto();
-        nbd.close();
+        try {
+            nbd.open();
 
-        Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+            String result = nbd.listUserPhoto();
+            nbd.close();
 
+            Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void setPhoto(View view){
-        nbd.open();
-        String photo = nbd.getPhoto(edIdUser.getText().toString());
-        nbd.close();
+    public void setPhoto(View view) {
+        try {
+            nbd.open();
 
-        file = new File(photo);
-        Bitmap mybit = BitmapFactory.decodeFile(file.getAbsolutePath());
-        imPhoto.setImageBitmap(mybit);
+            String photo = nbd.getPhoto(edIdUser.getText().toString());
+            nbd.close();
 
+            file = new File(photo);
+            Bitmap mybit = BitmapFactory.decodeFile(file.getAbsolutePath());
+            imPhoto.setImageBitmap(mybit);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
